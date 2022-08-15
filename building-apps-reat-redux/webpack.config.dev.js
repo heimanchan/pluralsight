@@ -12,7 +12,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "build"),
     publicPath: "/",
-    filename: "bundlie.js",
+    filename: "bundle.js",
   },
   devServer: {
     stats: "minimal",
