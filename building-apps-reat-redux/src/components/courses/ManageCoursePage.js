@@ -11,6 +11,7 @@ function ManageCoursePage({
   authors,
   loadAuthors,
   loadCourses,
+  saveCourse,
   ...props
 }) {
   const [course, setCourse] = useState({ ...props.course });
@@ -38,12 +39,18 @@ function ManageCoursePage({
     }));
   }
 
+  function handleSave(event) {
+    event.preventDefault();
+    saveCourse(course); //saveCourse function from props of local state
+  }
+
   return (
     <CourseForm
       course={course}
       errors={errors}
       authors={authors}
       onChange={handleChange}
+      onSave={handleSave}
     />
   );
 }
@@ -54,6 +61,7 @@ ManageCoursePage.propTypes = {
   authors: PropTypes.array.isRequired,
   loadAuthors: PropTypes.func.isRequired,
   loadCourses: PropTypes.func.isRequired,
+  saveCourse: PropTypes.func.isRequired,
 };
 
 function mapStatesToProps(state) {
@@ -66,6 +74,7 @@ function mapStatesToProps(state) {
 // Declare mapDispatchToProps as object
 const mapDispatchToProps = {
   loadCourses: courseActions.loadCourses,
+  saveCourse: courseActions.saveCourse,
   loadAuthors: authorActions.loadAuthors,
 };
 

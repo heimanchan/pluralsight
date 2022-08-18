@@ -26,7 +26,7 @@ export function loadCourses() {
   };
 }
 
-export function saveCourses(course) {
+export function saveCourse(course) {
   return function (dispatch, getState) {
     return courseApi
       .saveCourse(course)
