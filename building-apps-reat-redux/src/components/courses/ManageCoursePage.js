@@ -17,6 +17,7 @@ function ManageCoursePage({
   history,
   ...props
 }) {
+  //local states
   const [course, setCourse] = useState({ ...props.course });
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
@@ -45,14 +46,33 @@ function ManageCoursePage({
     }));
   }
 
+  function formIsValid() {
+    const { title, authorId, category } = course;
+    const errors = {};
+
+    if (!title) errors.title = "Title is required.";
+    if (!authorId) errors.author = "AuthorId is required.";
+    if (!category) errors.category = "Category is required.";
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  }
+
   function handleSave(event) {
     event.preventDefault();
+    if (!formIsValid()) return;
     setSaving(true);
-    saveCourse(course).then(() => {
-      //saveCourse function from props of local state
-      toast.success("Course saved.");
-      history.push("/courses");
-    });
+    //saveCourse function from props of local state
+    saveCourse(course)
+      .then(() => {
+        toast.success("Course saved.");
+        history.push("/courses");
+      })
+      .catch((error) => {
+        setSaving(false);
+        setErrors({ onSave: error.message });
+      });
   }
 
   return authors.length === 0 || courses.length === 0 ? (
