@@ -59,21 +59,35 @@ function ManageCoursePage({
     return Object.keys(errors).length === 0;
   }
 
-  function handleSave(event) {
+  // function handleSave(event) {
+  //   event.preventDefault();
+  //   if (!formIsValid()) return;
+  //   setSaving(true);
+  //   //saveCourse function from props of local state
+  //   saveCourse(course)
+  //     .then(() => {
+  //       toast.success("Course saved.");
+  //       history.push("/courses");
+  //     })
+  //     .catch((error) => {
+  //       setSaving(false);
+  //       setErrors({ onSave: error.message });
+  //     });
+  // }
+
+  const handleSave = async (event) => {
     event.preventDefault();
     if (!formIsValid()) return;
     setSaving(true);
-    //saveCourse function from props of local state
-    saveCourse(course)
-      .then(() => {
-        toast.success("Course saved.");
-        history.push("/courses");
-      })
-      .catch((error) => {
-        setSaving(false);
-        setErrors({ onSave: error.message });
-      });
-  }
+    try {
+      await saveCourse(course);
+      toast.success("Course saved!");
+      history.push("/courses");
+    } catch (error) {
+      setSaving(false);
+      setErrors({ onSave: error.message });
+    }
+  };
 
   return authors.length === 0 || courses.length === 0 ? (
     <Spinner />
